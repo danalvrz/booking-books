@@ -1,13 +1,18 @@
 import React from 'react';
 import Header from './Header';
 
-const mockBook = {title: 'The Artist In The Machine', author: 'Arthur I. Miller', id: 0, progress: 50, currentChapter: 5, category: 'non-fiction'};
-const BookList = () => {
-  return (
-<li>{mockBook.title}<br></br>{mockBook.author}<br></br><button type='button'>Remove</button></li>
-  );
-
+const mockBook = {
+  title: 'The Artist In The Machine', author: 'Arthur I. Miller', id: 0, progress: 50, currentChapter: 5, category: 'non-fiction',
 };
+const BookList = () => (
+  <li>
+    {mockBook.title}
+    <br />
+    {mockBook.author}
+    <br />
+    <button type="button">Remove</button>
+  </li>
+);
 const Books = () => (
   <div>
     <Header />
@@ -16,7 +21,7 @@ const Books = () => (
       <ul>
         <BookList />
       </ul>
-      <input type="text" placeholder="Book title"></input>
+      <input type="text" placeholder="Book title" />
       <select name="cars" id="cars">
         <option value="horror">Horror</option>
         <option value="scifi">Sci-Fi</option>
