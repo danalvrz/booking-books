@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import store from '../redux/configureStore';
 
@@ -7,14 +7,6 @@ const REMOVE_BOOK = { type: 'REMOVE_BOOK', id: 0 };
 const FETCH_BOOK = { type: 'FETCH_BOOK', payload: [] };
 
 const baseUrl = 'https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps/kHXXub8OPr6PqC5APwrM/books';
-
-const fetchData = async () => {
-  fetch(baseUrl, { method: 'GET' })
-    .then((response) => response.json()
-      .then((data) => store.dispatch({ ...FETCH_BOOK, payload: { data } })));
-};
-
-fetchData();
 
 const deleteBook = (id) => async () => {
   store.dispatch({ ...REMOVE_BOOK, id });
@@ -49,23 +41,35 @@ const eventAddBook = (title, category, id) => {
   store.dispatch(addBook(title, category, id));
 };
 
-function BookList() {
-  const list = [];
-  store.getState().books.forEach((book) => list.push(
-    <li key={book.id}>
-      {book.title}
-      <br />
-      {book.author}
-      <br />
-      <button type="button" onClick={() => { eventRemoveBook(book.id); }}>Remove</button>
-    </li>,
-  ));
-  return list;
-}
-
 const Books = () => {
   let titleInput = '';
   let categoryInput = '';
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      fetch(baseUrl, { method: 'GET' })
+        .then((response) => response.json()
+          .then((data) => store.dispatch({ ...FETCH_BOOK, payload: { data } })));
+      setBooks(store.getState().books);
+    };
+    fetchData();
+  }, books);
+
+  function BookList() {
+    const list = [];
+    store.getState().books.forEach((book) => list.push(
+      <li key={book.id}>
+        {book.title}
+        <br />
+        {book.author}
+        <br />
+        <button type="button" onClick={() => { eventRemoveBook(book.id); }}>Remove</button>
+      </li>,
+    ));
+    return list;
+  }
+
   return (
     <div>
       <Header />
