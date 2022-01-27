@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Header from './Header';
 import store from '../redux/configureStore';
 
 const ADD_BOOK = { type: 'ADD_BOOK', title: '', category: '' };
 const REMOVE_BOOK = { type: 'REMOVE_BOOK', id: 0 };
-const FETCH_BOOK = { type: 'FETCH_BOOK', payload: [] };
 
 const baseUrl = 'https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps/kHXXub8OPr6PqC5APwrM/books';
 
@@ -48,17 +47,6 @@ const eventAddBook = (title, category, id) => {
 const Books = () => {
   let titleInput = '';
   let categoryInput = '';
-  const [books, setBooks] = useState([]);
-
-  useEffect(async () => {
-    const fetchData = async () => {
-      fetch(baseUrl, { method: 'GET' })
-        .then((response) => response.json()
-          .then((data) => store.dispatch({ ...FETCH_BOOK, payload: { data } })));
-      setBooks(store.getState().books);
-    };
-    fetchData();
-  }, books);
 
   function BookList() {
     const list = [];
